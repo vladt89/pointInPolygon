@@ -1,5 +1,7 @@
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.List;
+
 /**
  * Entry point of the application.
  *
@@ -14,7 +16,11 @@ public class Main {
 
         // 1. Read and print poligon file
         final InputDataAnalyzer inputDataAnalyzer = (InputDataAnalyzer) applicationContext.getBean("inputDataAnalyzer");
-        inputDataAnalyzer.readFile("src/main/resources/polygon.txt");
+        final List<Point> pointList = inputDataAnalyzer.readFile("src/main/resources/polygon.txt");
+
+        for (Point point : pointList) {
+            System.out.println(point.getX() + " " + point.getY());
+        }
 
         // 2. Calculate  poligon area
         // 3. Read points file

@@ -1,0 +1,37 @@
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+
+/**
+ * Test class for {@link InputDataAnalyzer}.
+ *
+ * @author vladimir.tikhomirov
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring-config.xml"})
+public class InputDataAnalyzerTest {
+
+    @Autowired
+    InputDataAnalyzer inputDataAnalyzer;
+
+    /**
+     * Tests {@link InputDataAnalyzer#readFile(String)}. Happy path.
+     */
+    @Test
+    public void testReadFile() throws Exception {
+
+        //EXERCISE
+        final List<Point> pointList = inputDataAnalyzer.readFile("src/test/resources/testPolygon.txt");
+
+        //VERIFY
+        Assert.assertEquals(5, pointList.get(0).getX());
+        Assert.assertEquals(8, pointList.get(2).getX());
+        Assert.assertEquals(1, pointList.get(pointList.size() - 1).getY());
+        Assert.assertEquals(1, pointList.get(pointList.size() - 2).getX());
+    }
+}

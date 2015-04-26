@@ -2,44 +2,57 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Class which is responsible for input data validation and parsing.
+ * Class which is responsible for input each validation and parsing.
  *
  * @author vladimir.tikhomirov
  */
 public class InputDataAnalyzer {
 
-    public String[] readFile(String filePath) {
-        BufferedReader in;
+    public static final int DIMENSION_2D = 2;
+
+    public List<Point> readFile(String filePath) {
+        BufferedReader reader;
         try {
-            in = new BufferedReader(new FileReader(filePath));
+            reader = new BufferedReader(new FileReader(filePath));
         } catch (FileNotFoundException e) {
+            //TODO move to caller class
             e.printStackTrace();
             System.out.println("File cannot be found in " + System.getProperty("user.dir"));
             return null;
         }
-        String str;
+        List<Point> pointList = null;
         try {
-            String[] array = null;
-            while ((str = in.readLine()) != null) {
-                array = str.split(";");
-            }
-            if (array != null) {
-                for (String s : array) {
-                    //TODO fix that we print only last line
-                    System.out.print(s + " ");
+            pointList = parseFile(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pointList;
+    }
+
+    private List<Point> parseFile(BufferedReader reader) throws IOException {
+        List<Point> pointList = new LinkedList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            final String[] points = line.split(";");
+            for (String each : points) {
+                final String[] split = each.split(",");
+                if (split.length == DIMENSION_2D) {
+                    final int coordinateX = Integer.parseInt(split[0].trim());
+                    final int coordinateY = Integer.parseInt(split[1].trim());
+                    final Point point = new Point(coordinateX, coordinateY);
+                    pointList.add(point);
                 }
             }
-            return array;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        try {
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return pointList;
     }
 }
