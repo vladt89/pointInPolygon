@@ -6,7 +6,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public Direction analyzePoint(Point from, Point to, Point pointToAnalyze) {
-        final int result = (to.getX() - from.getX()) * (pointToAnalyze.getY() - to.getY())
+        final double result = (to.getX() - from.getX()) * (pointToAnalyze.getY() - to.getY())
                 - (to.getY() - from.getY()) * (pointToAnalyze.getX() - to.getX());
 
         if (result > 0) {

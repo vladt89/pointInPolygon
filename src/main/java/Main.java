@@ -16,8 +16,15 @@ public class Main {
 
         // 1. Read and print poligon file
         final InputDataAnalyzer inputDataAnalyzer = (InputDataAnalyzer) applicationContext.getBean("inputDataAnalyzer");
-        final List<Point> pointList = inputDataAnalyzer.readFile("src/main/resources/polygon.txt");
+        final List<Point> polygonPointList = inputDataAnalyzer.readFile("src/main/resources/polygon.txt");
 
+        System.out.println("Polygon vertexes: ");
+        for (Point point : polygonPointList) {
+            System.out.println(point.getX() + " " + point.getY());
+        }
+
+        final List<Point> pointList = inputDataAnalyzer.readFile("src/main/resources/points.txt");
+        System.out.println("Points to analyze: ");
         for (Point point : pointList) {
             System.out.println(point.getX() + " " + point.getY());
         }

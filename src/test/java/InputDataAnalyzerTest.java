@@ -19,6 +19,8 @@ public class InputDataAnalyzerTest {
     @Autowired
     InputDataAnalyzer inputDataAnalyzer;
 
+    private double delta = 0.001;
+
     /**
      * Tests {@link InputDataAnalyzer#readFile(String)}. Happy path.
      */
@@ -29,9 +31,9 @@ public class InputDataAnalyzerTest {
         final List<Point> pointList = inputDataAnalyzer.readFile("src/test/resources/testPolygon.txt");
 
         //VERIFY
-        Assert.assertEquals(5, pointList.get(0).getX());
-        Assert.assertEquals(8, pointList.get(2).getX());
-        Assert.assertEquals(1, pointList.get(pointList.size() - 1).getY());
-        Assert.assertEquals(1, pointList.get(pointList.size() - 2).getX());
+        Assert.assertEquals(5, pointList.get(0).getX(), delta);
+        Assert.assertEquals(8, pointList.get(2).getX(), delta);
+        Assert.assertEquals(1, pointList.get(pointList.size() - 1).getY(), delta);
+        Assert.assertEquals(1, pointList.get(pointList.size() - 2).getX(), delta);
     }
 }

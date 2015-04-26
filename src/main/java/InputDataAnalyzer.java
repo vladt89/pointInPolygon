@@ -46,8 +46,8 @@ public class InputDataAnalyzer {
             for (String each : points) {
                 final String[] split = each.split(",");
                 if (split.length == DIMENSION_2D) {
-                    final int coordinateX = Integer.parseInt(split[0].trim());
-                    final int coordinateY = Integer.parseInt(split[1].trim());
+                    final double coordinateX = Double.parseDouble(split[0].trim());
+                    final double coordinateY = Double.parseDouble(split[1].trim());
                     final Point point = new Point(coordinateX, coordinateY);
                     pointList.add(point);
                 }
