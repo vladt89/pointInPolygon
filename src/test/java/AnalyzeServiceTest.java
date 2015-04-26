@@ -23,6 +23,7 @@ public class AnalyzeServiceTest {
 
     /**
      * Initialize points which will be analyzed as a vector AB (A = from, B = to).
+     * @throws Exception -
      */
     @Before
     public void setUp() throws Exception {
@@ -33,6 +34,7 @@ public class AnalyzeServiceTest {
     /**
      * Tests {@link AnalyzeService#analyzePoint(Point, Point, Point)} when the pointToAnalyze
      * is in the left side from the direction of the vector AB (A = from, B = to).
+     * @throws Exception -
      */
     @Test
     public void testAnalyzePointWhenPointToAnalyzeIsInTheLeft() throws Exception {
@@ -49,6 +51,7 @@ public class AnalyzeServiceTest {
     /**
      * Tests {@link AnalyzeService#analyzePoint(Point, Point, Point)} when the pointToAnalyze
      * is in the right side from the direction of the vector AB (A = from, B = to).
+     * @throws Exception -
      */
     @Test
     public void testAnalyzePointWhenPointToAnalyzeIsInTheRight() throws Exception {
@@ -65,6 +68,7 @@ public class AnalyzeServiceTest {
     /**
      * Tests {@link AnalyzeService#analyzePoint(Point, Point, Point)} when the pointToAnalyze
      * is in the right side from the direction of the vector AB (A = from, B = to).
+     * @throws Exception -
      */
     @Test
     public void testAnalyzePointWhenPointToAnalyzeBelongsToTheVector() throws Exception {
@@ -76,5 +80,41 @@ public class AnalyzeServiceTest {
 
         //VERIFY
         Assert.assertEquals(Direction.SAME, direction);
+    }
+
+    /**
+     * Tests {@link AnalyzeService#isSegmentIntersection(Point, Point, Point, Point)} when two segments
+     * AB and CD (C = segmentToAnalyzeFrom, D = segmentToAnalyzeTo) are intersected.
+     * @throws Exception -
+     */
+    @Test
+    public void testIsSegmentIntersectionWhenIntersectionHappened() throws Exception {
+        //SETUP SUT
+        Point segmentToAnalyzeFrom = new Point(3, 1);
+        Point segmentToAnalyzeTo = new Point(1, 4);
+
+        //EXERCISE
+        final boolean result = analyzeService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
+
+        //VERIFY
+        Assert.assertTrue(result);
+    }
+
+    /**
+     * Tests {@link AnalyzeService#isSegmentIntersection(Point, Point, Point, Point)} when two segments
+     * AB and CD (C = segmentToAnalyzeFrom, D = segmentToAnalyzeTo) are not intersected.
+     * @throws Exception -
+     */
+    @Test
+    public void testIsSegmentIntersectionWhenIntersectionNotHappened() throws Exception {
+        //SETUP SUT
+        Point segmentToAnalyzeFrom = new Point(3, 1);
+        Point segmentToAnalyzeTo = new Point(4, 3);
+
+        //EXERCISE
+        final boolean result = analyzeService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
+
+        //VERIFY
+        Assert.assertFalse(result);
     }
 }
