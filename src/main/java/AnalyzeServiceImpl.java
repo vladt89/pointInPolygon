@@ -1,8 +1,12 @@
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author vladimir.tikhomirov
  */
 public class AnalyzeServiceImpl implements AnalyzeService {
 
+    List<Point> polygon = new LinkedList<>();
 
     @Override
     public Direction analyzePoint(Point from, Point to, Point pointToAnalyze) {
@@ -32,5 +36,48 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private double analyzeDirection(Point from, Point to, Point pointToAnalyze) {
         return (to.getX() - from.getX()) * (pointToAnalyze.getY() - to.getY())
                 - (to.getY() - from.getY()) * (pointToAnalyze.getX() - to.getX());
+    }
+
+    @Override
+    public boolean isPointInPolygon(Point pointToAnalyze) {
+
+//        TODO fix vertex problem
+//        for (Point point : polygon) {
+//            if (point.equals(pointToAnalyze)) {
+//                return true;
+//            }
+//        }
+//        if (polygon.contains(pointToAnalyze)) {
+//            return true;
+//        }
+
+        //the point from which we start to determine if provided point belongs to the polygon or not
+        final Point mainPoint = polygon.get(0);
+        final int lastVertex = polygon.size() - 1;
+
+        //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
+        if (analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
+                || analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
+            return false;
+        }
+
+        int p = 1;
+        int r = lastVertex;
+        while (r - p > 1) {
+            //find middle vertex
+            int q = (p + r) / 2;
+            if (analyzePoint(mainPoint, polygon.get(q), pointToAnalyze) == Direction.LEFT) {
+                r = q;
+            } else {
+                p = q;
+            }
+        }
+
+        //if segments are not intersected then the point is inside polygon
+        return !isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(p), polygon.get(r));
+    }
+
+    public void setPolygon(List<Point> polygon) {
+        this.polygon = polygon;
     }
 }

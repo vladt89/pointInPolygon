@@ -14,24 +14,23 @@ public class Main {
         // load Spring
         final ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-config.xml");
 
-        // 1. Read and print poligon file
         final InputDataAnalyzer inputDataAnalyzer = (InputDataAnalyzer) applicationContext.getBean("inputDataAnalyzer");
+
         final List<Point> polygonPointList = inputDataAnalyzer.readFile("src/main/resources/polygon.txt");
+        final List<Point> pointList = inputDataAnalyzer.readFile("src/main/resources/points.txt");
+
+        final AnalyzeServiceImpl analyzeService = (AnalyzeServiceImpl) applicationContext.getBean("analyzeService");
+        analyzeService.setPolygon(polygonPointList);
 
         System.out.println("Polygon vertexes: ");
         for (Point point : polygonPointList) {
             System.out.println(point.getX() + " " + point.getY());
         }
 
-        final List<Point> pointList = inputDataAnalyzer.readFile("src/main/resources/points.txt");
         System.out.println("Points to analyze: ");
         for (Point point : pointList) {
-            System.out.println(point.getX() + " " + point.getY());
+            boolean result = analyzeService.isPointInPolygon(point);
+            System.out.println(point.getX() + " " + point.getY() + " point in polygon: " + result);
         }
-
-        // 2. Calculate  poligon area
-        // 3. Read points file
-        // 4. Determine if each of the point is inside poligon, out side or on the border.
-        // 5. Print the result of the calculations
     }
 }
