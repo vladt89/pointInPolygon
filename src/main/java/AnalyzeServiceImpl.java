@@ -39,6 +39,32 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
+    public boolean isPointInPolygon2(Point pointToAnalyze) {
+        final Point mainPoint = polygon.get(0);
+        final int lastVertex = polygon.size() - 1;
+        //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
+        if (analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
+                || analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
+            return false;
+        }
+
+        int count = 0;
+        for (int i = 0; i < polygon.size(); i++) {
+            if (i + 1 == polygon.size()) {
+                if (isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(0))) {
+                    count++;
+                }
+                break;
+            }
+
+            if (isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(i + 1))) {
+                count++;
+            }
+        }
+        return count % 2 == 0;
+    }
+
+    @Override
     public boolean isPointInPolygon(Point pointToAnalyze) {
 
 //        TODO fix vertex problem

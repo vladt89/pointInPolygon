@@ -31,8 +31,28 @@ public interface AnalyzeService {
     /**
      * Determines if the provided point belongs to polygon or not.
      *
+     * To achieve the goal this method is using binary search algorithm by searching between
+     * which vertexes the point is located. Then it checks if the segment made by these vertexes
+     * intersects segment which starts in the main point and ends in the point which we try to localize.
+     * The main point is chosen just by first provided point from polygon set.
+     *
+     * The method works only for convex polygons.
+     *
      * @param point point to analyze
      * @return {@code true} if point belongs to polygon. {@code false} otherwise
      */
     boolean isPointInPolygon(Point point);
+
+    /**
+     * Determines if the provided point belongs to polygon or not.
+     *
+     * To achieve the goal this method calculates the amount of intersections made by segment which
+     * starts in the main point and ends in the point which we try to localize and other segments of
+     * the polygon.
+     *
+     * @param point point to analyze
+     * @return {@code true} if point belongs to polygon. {@code false} otherwise
+     */
+    boolean isPointInPolygon2(Point point);
+
 }

@@ -44,7 +44,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     @Test
     public void testIsPointInPolygonWhenItIsNot() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(4, 1));
+        final boolean result = analyzeService.isPointInPolygon2(new Point(4, 1));
         //VERIFY
         Assert.assertFalse(result);
     }
@@ -56,7 +56,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     @Test
     public void testIsPointInPolygonWhenItIs() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(3, 2));
+        final boolean result = analyzeService.isPointInPolygon2(new Point(3, 2));
         //VERIFY
         Assert.assertTrue(result);
     }
@@ -70,7 +70,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     public void testIsPointInPolygonWhenItIsNot2() throws Exception {
         //EXERCISE
         //(6,6) should work
-        final boolean result = analyzeService.isPointInPolygon(new Point(2, 6));
+        final boolean result = analyzeService.isPointInPolygon2(new Point(2, 6));
         //VERIFY
         Assert.assertFalse(result);
     }

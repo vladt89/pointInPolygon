@@ -29,7 +29,7 @@ public class Main {
 
         System.out.println("Points to analyze: ");
         for (Point point : pointList) {
-            boolean result = analyzeService.isPointInPolygon(point);
+            boolean result = analyzeService.isPointInPolygon2(point);
             System.out.println(point.getX() + " " + point.getY() + " point in polygon: " + result);
         }
     }
