@@ -39,7 +39,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public boolean isPointInPolygon2(Point pointToAnalyze) {
+    public boolean isPointInPolygon(Point pointToAnalyze) {
+        if (polygon.contains(pointToAnalyze)) {
+            return true;
+        }
+
         final Point mainPoint = polygon.get(0);
         final int lastVertex = polygon.size() - 1;
         //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
@@ -65,17 +69,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public boolean isPointInPolygon(Point pointToAnalyze) {
-
-//        TODO fix vertex problem
-//        for (Point point : polygon) {
-//            if (point.equals(pointToAnalyze)) {
-//                return true;
-//            }
-//        }
-//        if (polygon.contains(pointToAnalyze)) {
-//            return true;
-//        }
+    public boolean isPointInConvexPolygon(Point pointToAnalyze) {
 
         //the point from which we start to determine if provided point belongs to the polygon or not
         final Point mainPoint = polygon.get(0);

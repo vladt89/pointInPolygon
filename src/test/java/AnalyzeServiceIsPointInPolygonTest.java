@@ -47,7 +47,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
 
         //EXERCISE & VERIFY
         for (Point pointToVerify : pointsOutsideOfPolygon) {
-            Assert.assertFalse(analyzeService.isPointInPolygon2(pointToVerify));
+            Assert.assertFalse(analyzeService.isPointInPolygon(pointToVerify));
         }
     }
 
@@ -58,7 +58,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     @Test
     public void testIsPointInPolygonWhenItIs() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon2(new Point(3, 2));
+        final boolean result = analyzeService.isPointInPolygon(new Point(3, 2));
         //VERIFY
         Assert.assertTrue(result);
     }
@@ -71,7 +71,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     @Test
     public void testIsPointInPolygonWhenItIsNot2() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon2(new Point(2, 6));
+        final boolean result = analyzeService.isPointInPolygon(new Point(2, 6));
         //VERIFY
         Assert.assertFalse(result);
     }

@@ -23,8 +23,8 @@ public class RunningServiceImpl implements RunningService {
         System.out.println("Points to analyze: ");
         final List<Point> pointList = inputDataAnalyzer.readFile("src/main/resources/points.txt");
         for (Point point : pointList) {
-            boolean result = polygonPointList.contains(point) || analyzeService.isPointInPolygon2(point);
-            System.out.println(point.getX() + " " + point.getY() + " point in polygon: " + result);
+            System.out.println(point.getX() + " " + point.getY()
+                    + " point in polygon: " + analyzeService.isPointInPolygon(point));
         }
     }
 
