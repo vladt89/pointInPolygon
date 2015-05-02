@@ -9,15 +9,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 /**
- * Test class for {@link AnalyzeService#isPointInPolygon(Point)}.
+ * Test class for {@link AnalyzeService#isPointInConvexPolygon(Point)}.
  *
  * @author vladimir.tikhomirov
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
-public class AnalyzeServiceIsPointInPolygonTest {
+public class AnalyzeServiceIsPointInConvexPolygonTest {
 
-    public static final String POLYGON_POINTS = "src/test/resources/nonconvexPolygonTest.txt";
+    public static final String POLYGON_POINTS = "src/test/resources/convexPolygonTest.txt";
     public static final String OUTSIDE_POINTS = "src/test/resources/outsidePoints.txt";
 
     @Autowired
@@ -36,7 +36,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     }
 
     /**
-     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the points do not even belong to the angle
+     * Tests {@link AnalyzeService#isPointInConvexPolygon(Point)} when the points do not even belong to the angle
      * of the first polygon point and it's neighbours.
      * @throws Exception -
      */
@@ -47,18 +47,18 @@ public class AnalyzeServiceIsPointInPolygonTest {
 
         //EXERCISE & VERIFY
         for (Point pointToVerify : pointsOutsideOfPolygon) {
-            Assert.assertFalse(analyzeService.isPointInPolygon(pointToVerify));
+            Assert.assertFalse(analyzeService.isPointInConvexPolygon(pointToVerify));
         }
     }
 
     /**
-     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the point belongs to the polygon.
+     * Tests {@link AnalyzeService#isPointInConvexPolygon(Point)} when the point belongs to the polygon.
      * @throws Exception -
      */
     @Test
     public void testIsPointInPolygonWhenItIs() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(3, 2));
+        final boolean result = analyzeService.isPointInConvexPolygon(new Point(3, 2));
         //VERIFY
         Assert.assertTrue(result);
     }
@@ -71,7 +71,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     @Test
     public void testIsPointInPolygonWhenItIsNot2() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(2, 6));
+        final boolean result = analyzeService.isPointInConvexPolygon(new Point(2, 6));
         //VERIFY
         Assert.assertFalse(result);
     }
