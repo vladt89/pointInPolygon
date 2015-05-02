@@ -17,8 +17,8 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class AnalyzeServiceIsPointInPolygonTest {
 
-    public static final String POLYGON_POINTS = "src/test/resources/nonconvexPolygonTest.txt";
-    public static final String OUTSIDE_POINTS = "src/test/resources/outsidePoints.txt";
+    public static final String POLYGON_POINTS = "src/test/resources/nonconvex/nonconvexPolygonTest.txt";
+    public static final String OUTSIDE_POINTS = "src/test/resources/nonconvex/outsidePoints.txt";
 
     @Autowired
     AnalyzeServiceImpl analyzeService;
@@ -58,7 +58,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     @Test
     public void testIsPointInPolygonWhenItIs() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(3, 2));
+        final boolean result = analyzeService.isPointInPolygon(new Point(5.5, 3));
         //VERIFY
         Assert.assertTrue(result);
     }
@@ -71,7 +71,7 @@ public class AnalyzeServiceIsPointInPolygonTest {
     @Test
     public void testIsPointInPolygonWhenItIsNot2() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(2, 6));
+        final boolean result = analyzeService.isPointInPolygon(new Point(1, 9));
         //VERIFY
         Assert.assertFalse(result);
     }

@@ -17,8 +17,8 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class AnalyzeServiceIsPointInConvexPolygonTest {
 
-    public static final String POLYGON_POINTS = "src/test/resources/convexPolygonTest.txt";
-    public static final String OUTSIDE_POINTS = "src/test/resources/outsidePoints.txt";
+    public static final String POLYGON_POINTS = "src/test/resources/convex/convexPolygonTest.txt";
+    public static final String OUTSIDE_POINTS = "src/test/resources/convex/outsidePoints.txt";
 
     @Autowired
     AnalyzeServiceImpl analyzeService;
