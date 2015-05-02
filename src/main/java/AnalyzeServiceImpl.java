@@ -21,6 +21,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return Direction.SAME;
     }
 
+    @Override
     public double angleBetweenTwoLines(Point lineStart, Point lineEnd, Point anotherLineStart, Point anotherLineEnd) {
 
         double angle1 = Math.atan2(lineStart.getY() - lineEnd.getY(), lineStart.getX() - lineEnd.getX());
@@ -29,7 +30,31 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         final double result = angle1 - angle2;
 
-        return 360 - result / Math.PI * 180;
+        return result / Math.PI * 180;
+    }
+
+    //TODO fix it
+    public int findVertexWithTheLargestAngle() {
+
+        int vertexIndex = 0;
+        double maxAngle = 0;
+
+        for (int i = 1; i < polygon.size(); i++) {
+            final Point centerPoint = polygon.get(i);
+            if (i + 1 == polygon.size()) {
+                if (angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(0)) > maxAngle) {
+                    return i;
+                }
+                break;
+            }
+            double angle = angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(i + 1));
+            if (angle > maxAngle) {
+                maxAngle = angle;
+                vertexIndex = i;
+            }
+        }
+
+        return vertexIndex;
     }
 
     @Override

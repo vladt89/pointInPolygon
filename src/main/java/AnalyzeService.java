@@ -18,6 +18,17 @@ public interface AnalyzeService {
     Direction analyzePoint(Point from, Point to, Point pointToAnalyze);
 
     /**
+     * Calculates the angle between two lines.
+     *
+     * @param lineStart the starting point of the first line
+     * @param lineEnd the ending point of the first line
+     * @param anotherLineStart the starting point of the second line
+     * @param anotherLineEnd the ending point of the second line
+     * @return the angle
+     */
+    double angleBetweenTwoLines(Point lineStart, Point lineEnd, Point anotherLineStart, Point anotherLineEnd);
+
+    /**
      * Determines if two segments (AB and CD) are crossing each other or not.
      *
      * @param segmentFrom beginning point A of the segment AB

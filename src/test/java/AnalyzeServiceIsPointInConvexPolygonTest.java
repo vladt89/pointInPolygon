@@ -75,4 +75,14 @@ public class AnalyzeServiceIsPointInConvexPolygonTest {
         //VERIFY
         Assert.assertFalse(result);
     }
+
+    @Test
+    public void testFindLargestAngle() throws Exception {
+        //EXERCISE
+        final int vertexWithTheLargestAngle = analyzeService.findVertexWithTheLargestAngle();
+
+        //VERIFY
+        Assert.assertEquals(1, vertexWithTheLargestAngle);
+
+    }
 }
