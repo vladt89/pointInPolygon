@@ -21,6 +21,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return Direction.SAME;
     }
 
+    public double angleBetweenTwoLines(Point lineStart, Point lineEnd, Point anotherLineStart, Point anotherLineEnd) {
+
+        double angle1 = Math.atan2(lineStart.getY() - lineEnd.getY(), lineStart.getX() - lineEnd.getX());
+
+        double angle2 = Math.atan2(anotherLineStart.getY() - anotherLineEnd.getY(), anotherLineStart.getX() - anotherLineEnd.getX());
+
+        final double result = angle1 - angle2;
+
+        return 360 - result / Math.PI * 180;
+    }
+
     @Override
     public boolean isSegmentIntersection(Point segmentFrom, Point segmentTo, Point anotherSegmentFrom, Point anotherSegmentTo) {
 

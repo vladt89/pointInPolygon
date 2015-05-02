@@ -117,4 +117,20 @@ public class AnalyzeServiceTest {
         //VERIFY
         Assert.assertFalse(result);
     }
+
+    @Test
+    public void testAngleBetweenWtoLines() throws Exception {
+        Point lineStart = new Point(1, 1);
+        Point lineEnd = new Point(4, 1);
+
+        Point anotherLinesStart = new Point(1, 2);
+        Point anotherLineEnd = new Point(1, 4);
+
+        //EXERCISE
+        double angle = analyzeService.angleBetweenTwoLines(lineStart, lineEnd, anotherLinesStart, anotherLineEnd);
+
+        //VERIFY
+        Assert.assertEquals(90, angle, 0.01);
+
+    }
 }
