@@ -28,16 +28,22 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         double angle2 = Math.atan2(anotherLineStart.getY() - anotherLineEnd.getY(), anotherLineStart.getX() - anotherLineEnd.getX());
 
-        final double result = angle1 - angle2;
+        double result = angle1 - angle2;
 
-        return result / Math.PI * 180;
+        double degrees = Math.toDegrees(result);
+
+        if (degrees < 0) {
+            degrees += 360;
+        }
+        return degrees;
     }
 
     //TODO fix it
     public int findVertexWithTheLargestAngle() {
 
         int vertexIndex = 0;
-        double maxAngle = 0;
+        double maxAngle = angleBetweenTwoLines(polygon.get(0), polygon.get(polygon.size() - 1),
+                polygon.get(0), polygon.get(1));
 
         for (int i = 1; i < polygon.size(); i++) {
             final Point centerPoint = polygon.get(i);
