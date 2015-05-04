@@ -85,6 +85,6 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
         final int vertexWithTheLargestAngle = analyzeService.findVertexWithTheLargestAngle();
 
         //VERIFY
-        Assert.assertEquals(5, vertexWithTheLargestAngle);
+        Assert.assertEquals(4, vertexWithTheLargestAngle);
     }
 }
