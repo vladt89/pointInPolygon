@@ -15,10 +15,11 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
-public class AnalyzeServiceIsPointInPolygonTest {
+public class AnalyzeServiceIsPointInOriginalPolygonTest {
 
-    public static final String POLYGON_POINTS = "src/test/resources/nonconvex/nonconvexPolygonTest.txt";
-    public static final String OUTSIDE_POINTS = "src/test/resources/nonconvex/outsidePoints.txt";
+    public static final String POLYGON_POINTS = "src/test/resources/original/originalPolygonTest.txt";
+    public static final String OUTSIDE_POINTS = "src/test/resources/original/outsidePoints.txt";
+    public static final String INSIDE_POINTS = "src/test/resources/original/insidePoints.txt";
 
     @Autowired
     AnalyzeServiceImpl analyzeService;
@@ -42,13 +43,10 @@ public class AnalyzeServiceIsPointInPolygonTest {
      */
     @Test
     public void testIsPointInPolygonWhenItIsNot() throws Exception {
-        //SETUP SUT
-        List<Point> pointsOutsideOfPolygon = inputDataAnalyzer.readFile(OUTSIDE_POINTS);
-
-        //EXERCISE & VERIFY
-        for (Point pointToVerify : pointsOutsideOfPolygon) {
-            Assert.assertFalse(analyzeService.isPointInPolygon(pointToVerify));
-        }
+        //EXERCISE
+        final boolean result = analyzeService.isPointInPolygon(new Point(1, 1));
+        //VERIFY
+        Assert.assertFalse(result);
     }
 
     /**
@@ -57,10 +55,12 @@ public class AnalyzeServiceIsPointInPolygonTest {
      */
     @Test
     public void testIsPointInPolygonWhenItIs() throws Exception {
-        //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(5.5, 3));
-        //VERIFY
-        Assert.assertTrue(result);
+        //SETUP SUT
+        List<Point> pointsInsidePolygon = inputDataAnalyzer.readFile(INSIDE_POINTS);
+        //EXERCISE & VERIFY
+        for (Point pointToVerify : pointsInsidePolygon) {
+            Assert.assertTrue(analyzeService.isPointInPolygon(pointToVerify));
+        }
     }
 
     /**
@@ -70,9 +70,21 @@ public class AnalyzeServiceIsPointInPolygonTest {
      */
     @Test
     public void testIsPointInPolygonWhenItIsNot2() throws Exception {
+        //SETUP SUT
+        List<Point> pointsOutsideOfPolygon = inputDataAnalyzer.readFile(OUTSIDE_POINTS);
+
+        //EXERCISE & VERIFY
+        for (Point pointToVerify : pointsOutsideOfPolygon) {
+            Assert.assertFalse(analyzeService.isPointInPolygon(pointToVerify));
+        }
+    }
+
+    @Test
+    public void testFindLargestAngle() throws Exception {
         //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(1, 9));
+        final int vertexWithTheLargestAngle = analyzeService.findVertexWithTheLargestAngle();
+
         //VERIFY
-        Assert.assertFalse(result);
+        Assert.assertEquals(5, vertexWithTheLargestAngle);
     }
 }

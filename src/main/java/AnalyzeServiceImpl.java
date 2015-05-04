@@ -38,9 +38,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return degrees;
     }
 
-    //TODO fix it
     public int findVertexWithTheLargestAngle() {
-
         int vertexIndex = 0;
         double maxAngle = angleBetweenTwoLines(polygon.get(0), polygon.get(polygon.size() - 1),
                 polygon.get(0), polygon.get(1));
@@ -59,7 +57,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 vertexIndex = i;
             }
         }
-
         return vertexIndex;
     }
 
