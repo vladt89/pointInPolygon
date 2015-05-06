@@ -1,5 +1,4 @@
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author vladimir.tikhomirov
@@ -79,12 +78,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public boolean isPointInPolygon(Point pointToAnalyze) {
+        preparePolygon(pointToAnalyze);
+
         if (polygon.contains(pointToAnalyze)) {
             return true;
         }
 
         final Point mainPoint = polygon.get(0);
-        final int lastVertex = polygon.size() - 1;
+        int length = polygon.size();
+        final int lastVertex = length - 1;
         //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
         if (analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
                 || analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
@@ -92,8 +94,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         int count = 0;
-        for (int i = 0; i < polygon.size(); i++) {
-            if (i + 1 == polygon.size()) {
+        for (int i = 0; i < length; i++) {
+            if (i + 1 == length) {
                 if (isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(0))) {
                     count++;
                 }
@@ -136,7 +138,40 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return !isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(p), polygon.get(r));
     }
 
+    @Override
+    public void preparePolygon(Point point) {
+        Point closestVertex = findClosestVertex(point);
+        List<Point> points = reformatPolygon(closestVertex);
+        setPolygon(points);
+    }
+
+    private List<Point> reformatPolygon(Point closestVertex) {
+        List<Point> result = new ArrayList<>(polygon.size());
+        for (int i = 0; i < polygon.size(); i++) {
+            if (closestVertex.equals(polygon.get(i))) {
+                result = polygon.subList(i, polygon.size());
+                result.addAll(polygon.subList(0, i));
+                break;
+            }
+        }
+        return result;
+    }
+
+    private Point findClosestVertex(Point pointToAnalyze) {
+        Map<Double, Point> distanceToPoint = new HashMap<>();
+        for (Point point : polygon) {
+            double distance = point.distance(pointToAnalyze);
+            distanceToPoint.put(distance, point);
+        }
+        Double min = Collections.min(distanceToPoint.keySet());
+        return distanceToPoint.get(min);
+    }
+
     public void setPolygon(List<Point> polygon) {
         this.polygon = polygon;
+    }
+
+    public List<Point> getPolygon() {
+        return polygon;
     }
 }

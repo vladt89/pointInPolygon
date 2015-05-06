@@ -66,4 +66,5 @@ public interface AnalyzeService {
      */
     boolean isPointInPolygon(Point point);
 
+    void preparePolygon(Point point);
 }

@@ -26,4 +26,9 @@ public class Point {
         Point point = (Point) object;
         return this.x == point.getX() && this.y == point.getY();
     }
+
+    public double distance(Point pointToAnalyze) {
+        return Math.sqrt(Math.pow((pointToAnalyze.getX() - this.x), 2)
+                       + Math.pow((pointToAnalyze.getY() - this.y), 2));
+    }
 }

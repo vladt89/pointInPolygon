@@ -87,4 +87,13 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
         //VERIFY
         Assert.assertEquals(4, vertexWithTheLargestAngle);
     }
+
+    @Test
+    public void testPreparePolygon() throws Exception {
+        //EXERCISE
+        analyzeService.preparePolygon(new Point(2, 2));
+
+        //VERIFY
+        Assert.assertEquals(new Point(2, 1), analyzeService.getPolygon().get(0));
+    }
 }
