@@ -79,21 +79,24 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
         }
     }
 
-    @Test
-    public void testFindLargestAngle() throws Exception {
-        //EXERCISE
-        final int vertexWithTheLargestAngle = analyzeService.findVertexWithTheLargestAngle();
+//    @Test
+//    public void testFindLargestAcuteAngle() throws Exception {
+//        //EXERCISE
+//        final Point vertexWithTheLargestAcuteAngle = analyzeService.sortedAcuteAngleMap();
+//
+//        //VERIFY
+//        Assert.assertEquals(1, vertexWithTheLargestAcuteAngle.getX(), AnalyzeServiceTest.DELTA);
+//        Assert.assertEquals(5, vertexWithTheLargestAcuteAngle.getY(), AnalyzeServiceTest.DELTA);
+//    }
 
-        //VERIFY
-        Assert.assertEquals(4, vertexWithTheLargestAngle);
-    }
-
-    @Test
-    public void testPreparePolygon() throws Exception {
-        //EXERCISE
-        analyzeService.preparePolygon(new Point(2, 2));
-
-        //VERIFY
-        Assert.assertEquals(new Point(2, 1), analyzeService.getPolygon().get(0));
-    }
+//    @Test
+//    public void testPreparePolygon() throws Exception {
+//        //EXERCISE
+//        analyzeService.preparePolygon(new Point(2, 2));
+//
+//        //VERIFY
+//        Point mainPoint = analyzeService.getPolygon().get(0);
+//        Assert.assertEquals(2, mainPoint.getX(), AnalyzeServiceTest.DELTA);
+//        Assert.assertEquals(1, mainPoint.getY(), AnalyzeServiceTest.DELTA);
+//    }
 }

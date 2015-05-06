@@ -5,6 +5,7 @@ import java.util.*;
  */
 public class AnalyzeServiceImpl implements AnalyzeService {
 
+    public static final int STRAIGHT_ANGLE = 180;
     List<Point> polygon = new LinkedList<>();
 
     @Override
@@ -32,31 +33,53 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         double degrees = Math.toDegrees(result);
 
         if (degrees < 0) {
-            degrees += 360;
+            degrees += STRAIGHT_ANGLE * 2;
         }
         return degrees;
     }
 
-    public int findVertexWithTheLargestAngle() {
-        int vertexIndex = 0;
-        double maxAngle = angleBetweenTwoLines(polygon.get(0), polygon.get(polygon.size() - 1),
-                polygon.get(0), polygon.get(1));
+    public Map<Point, Double> sortedAcuteAngleMap() {
+        Point startPoint = polygon.get(0);
+        double angleForStartPoint = angleBetweenTwoLines(startPoint, polygon.get(polygon.size() - 1),
+                startPoint, polygon.get(1));
+        double maxAngle = angleForStartPoint < STRAIGHT_ANGLE ? angleForStartPoint : 0;
 
+        Map<Point, Double> pointToAngleMap = new HashMap<>();
+        pointToAngleMap.put(startPoint, maxAngle);
         for (int i = 1; i < polygon.size(); i++) {
             final Point centerPoint = polygon.get(i);
+            double angle;
             if (i + 1 == polygon.size()) {
-                if (angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(0)) > maxAngle) {
-                    return i;
+                angle = angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, startPoint);
+                if (maxAngle < angle && angle < STRAIGHT_ANGLE) {
+                    pointToAngleMap.put(centerPoint, angle);
+                    return pointToAngleMap;
                 }
                 break;
             }
-            double angle = angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(i + 1));
-            if (angle > maxAngle) {
+            angle = angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(i + 1));
+            if (maxAngle < angle && angle < STRAIGHT_ANGLE) {
+                pointToAngleMap.put(centerPoint, angle);
                 maxAngle = angle;
-                vertexIndex = i;
             }
         }
-        return vertexIndex;
+        return sortMapByValue(pointToAngleMap);
+    }
+
+    private Map<Point, Double> sortMapByValue(Map<Point, Double> pointToAngle) {
+        List<Map.Entry<Point, Double>> list = new LinkedList<>(pointToAngle.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Point, Double>>() {
+            @Override
+            public int compare(Map.Entry<Point, Double> o1, Map.Entry<Point, Double> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        Map<Point, Double> sortedPointToDistanceMapByDistance = new LinkedHashMap<>();
+        for (Map.Entry<Point, Double> entry : list) {
+            sortedPointToDistanceMapByDistance.put(entry.getKey(), entry.getValue());
+        }
+        return sortedPointToDistanceMapByDistance;
     }
 
     @Override
@@ -139,17 +162,33 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public void preparePolygon(Point point) {
-        Point closestVertex = findClosestVertex(point);
-        List<Point> points = reformatPolygon(closestVertex);
-        setPolygon(points);
+    public void preparePolygon(Point pointToAnalyze) {
+        Set<Point> vertexesWithAcuteAngles = sortedAcuteAngleMap().keySet();
+        Point mainPoint = null;
+        for (Point point : sortedDistanceMap(pointToAnalyze).keySet()) {
+            if (vertexesWithAcuteAngles.contains(point)) {
+                mainPoint = point;
+                break;
+            }
+        }
+        if (mainPoint != null) {
+            setPolygon(reformatPolygon(mainPoint));
+        }
     }
 
-    private List<Point> reformatPolygon(Point closestVertex) {
-        List<Point> result = new ArrayList<>(polygon.size());
-        for (int i = 0; i < polygon.size(); i++) {
-            if (closestVertex.equals(polygon.get(i))) {
-                result = polygon.subList(i, polygon.size());
+    /**
+     * Reformats polygon list in a way that provided main point is the first element in the list, however,
+     * the order of the points in the polygon is still the same.
+     *
+     * @param maintPoint main point
+     * @return polygon with the main point in the first place
+     */
+    private List<Point> reformatPolygon(Point maintPoint) {
+        int size = polygon.size();
+        List<Point> result = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            if (maintPoint.equals(polygon.get(i))) {
+                result = polygon.subList(i, size);
                 result.addAll(polygon.subList(0, i));
                 break;
             }
@@ -157,14 +196,20 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return result;
     }
 
-    private Point findClosestVertex(Point pointToAnalyze) {
-        Map<Double, Point> distanceToPoint = new HashMap<>();
+    /**
+     * Calculates the sorted map of distances from provided pointToAnalyze to all the polygon vertexes.
+     *
+     * @param pointToAnalyze point to which distances are calculated
+     * @return sorted map of distances
+     */
+    private Map<Point, Double> sortedDistanceMap(Point pointToAnalyze) {
+        Map<Point, Double> pointToDistance = new HashMap<>(polygon.size());
         for (Point point : polygon) {
             double distance = point.distance(pointToAnalyze);
-            distanceToPoint.put(distance, point);
+            pointToDistance.put(point, distance);
         }
-        Double min = Collections.min(distanceToPoint.keySet());
-        return distanceToPoint.get(min);
+
+        return sortMapByValue(pointToDistance);
     }
 
     public void setPolygon(List<Point> polygon) {

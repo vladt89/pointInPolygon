@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class AnalyzeServiceTest {
 
+    public static final double DELTA = 0.01;
     @Autowired
     AnalyzeServiceImpl analyzeService;
 
@@ -130,7 +131,7 @@ public class AnalyzeServiceTest {
         double angle = analyzeService.angleBetweenTwoLines(anotherLinesStart, anotherLineEnd, lineStart, lineEnd);
 
         //VERIFY
-        Assert.assertEquals(90, angle, 0.01);
+        Assert.assertEquals(90, angle, DELTA);
 
     }
 }
