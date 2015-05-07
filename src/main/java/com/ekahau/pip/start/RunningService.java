@@ -5,7 +5,7 @@ package com.ekahau.pip.start;
  */
 public interface RunningService {
     /**
-     * Starts the application.
+     * Starts the application which is going to solve the problem of point localization in polygon.
      */
     void start();
 }

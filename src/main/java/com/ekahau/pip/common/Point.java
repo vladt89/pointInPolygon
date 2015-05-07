@@ -1,6 +1,8 @@
 package com.ekahau.pip.common;
 
 /**
+ * Entity class for the point on the plane.
+ *
  * @author vladimir.tikhomirov
  */
 public class Point {

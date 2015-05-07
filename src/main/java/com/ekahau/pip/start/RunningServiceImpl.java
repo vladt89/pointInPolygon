@@ -16,7 +16,7 @@ public class RunningServiceImpl implements RunningService {
 
     @Override
     public void start() {
-        System.out.println("------ com.ekahau.pip.common.Point in Polygon ------");
+        System.out.println("------ Point in Polygon ------");
 
         final List<Point> polygonPointList = inputDataAnalyzer.readFile("src/main/resources/polygon.txt");
         analyzeService.setPolygon(polygonPointList);
