@@ -3,12 +3,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-       <bean id="runningService" class="RunningServiceImpl">
+       <bean id="runningService" class="com.ekahau.pip.start.RunningServiceImpl">
               <property name="inputDataAnalyzer" ref="inputDataAnalyzer"/>
               <property name="analyzeService" ref="analyzeService"/>
        </bean>
 
-       <bean name="inputDataAnalyzer" class="InputDataAnalyzer"/>
-       <bean name="analyzeService" class="AnalyzeServiceImpl"/>
+       <bean name="inputDataAnalyzer" class="com.ekahau.pip.analyze.InputDataAnalyzer"/>
+       <bean name="analyzeService" class="com.ekahau.pip.analyze.AnalyzeServiceImpl"/>
 
 </beans>

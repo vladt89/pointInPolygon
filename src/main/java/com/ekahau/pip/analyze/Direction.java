@@ -1,3 +1,5 @@
+package com.ekahau.pip.analyze;
+
 /**
  * @author vladimir.tikhomirov
  */

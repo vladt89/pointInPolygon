@@ -1,3 +1,7 @@
+package com.ekahau.pip.analyze;
+
+import com.ekahau.pip.analyze.InputDataAnalyzer;
+import com.ekahau.pip.common.Point;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

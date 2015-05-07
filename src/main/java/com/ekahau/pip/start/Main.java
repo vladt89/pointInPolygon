@@ -1,3 +1,6 @@
+package com.ekahau.pip.start;
+
+import com.ekahau.pip.start.RunningService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**

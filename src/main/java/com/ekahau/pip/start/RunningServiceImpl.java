@@ -1,3 +1,9 @@
+package com.ekahau.pip.start;
+
+import com.ekahau.pip.analyze.AnalyzeServiceImpl;
+import com.ekahau.pip.analyze.InputDataAnalyzer;
+import com.ekahau.pip.common.Point;
+
 import java.util.List;
 
 /**
@@ -10,7 +16,7 @@ public class RunningServiceImpl implements RunningService {
 
     @Override
     public void start() {
-        System.out.println("------ Point in Polygon ------");
+        System.out.println("------ com.ekahau.pip.common.Point in Polygon ------");
 
         final List<Point> polygonPointList = inputDataAnalyzer.readFile("src/main/resources/polygon.txt");
         analyzeService.setPolygon(polygonPointList);

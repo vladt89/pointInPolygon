@@ -1,3 +1,5 @@
+package com.ekahau.pip.common;
+
 /**
  * @author vladimir.tikhomirov
  */

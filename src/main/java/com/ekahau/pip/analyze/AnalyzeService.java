@@ -1,3 +1,7 @@
+package com.ekahau.pip.analyze;
+
+import com.ekahau.pip.common.Point;
+
 /**
  * Interface which defines the methods for basic functionality for working with points in 2D.
  *

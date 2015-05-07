@@ -1,3 +1,5 @@
+package com.ekahau.pip.start;
+
 /**
  * @author vladimir.tikhomirov
  */

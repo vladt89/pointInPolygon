@@ -1,3 +1,7 @@
+package com.ekahau.pip.analyze;
+
+import com.ekahau.pip.common.Point;
+
 import java.util.*;
 
 /**

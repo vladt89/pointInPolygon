@@ -1,3 +1,6 @@
+package com.ekahau.pip.analyze;
+
+import com.ekahau.pip.common.Point;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
