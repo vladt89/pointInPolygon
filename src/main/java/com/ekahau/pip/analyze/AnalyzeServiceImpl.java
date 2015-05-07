@@ -24,30 +24,38 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         if (polygon.contains(pointToAnalyze)) {
             return true;
         }
-
         final Point mainPoint = polygon.get(0);
-        int length = polygon.size();
-        final int lastVertex = length - 1;
-        //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
-        if (geometryService.analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
-                || geometryService.analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
+        if (isPointInMainAngle(pointToAnalyze, mainPoint)) {
             return false;
         }
 
+        int length = polygon.size();
         int count = 0;
         for (int i = 0; i < length; i++) {
             if (i + 1 == length) {
-                if (geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(0))) {
+                if (geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), mainPoint)) {
                     count++;
                 }
                 break;
             }
-
             if (geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(i + 1))) {
                 count++;
             }
         }
         return count % 2 == 0;
+    }
+
+    /**
+     * Checks if provided point belongs to the main angle which is build by main point of the polygon and it's
+     * neughbours.
+     *
+     * @param point point to check
+     * @param mainPoint main point of the polygon
+     * @return {@code true} if point belongs to the main angle, {@code false} otherwise
+     */
+    private boolean isPointInMainAngle(Point point, Point mainPoint) {
+        return geometryService.analyzePoint(mainPoint, polygon.get(1), point) == Direction.LEFT
+                || geometryService.analyzePoint(mainPoint, polygon.get(polygon.size() - 1), point) == Direction.RIGHT;
     }
 
     @Override
@@ -57,9 +65,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         final Point mainPoint = polygon.get(0);
         final int lastVertex = polygon.size() - 1;
 
-        //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
-        if (geometryService.analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
-                || geometryService.analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
+        if (isPointInMainAngle(pointToAnalyze, mainPoint)) {
             return false;
         }
 
@@ -98,14 +104,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      * Reformats polygon list in a way that provided main point is the first element in the list, however,
      * the order of the points in the polygon is still the same.
      *
-     * @param maintPoint main point
+     * @param mainPoint main point
      * @return polygon with the main point in the first place
      */
-    private List<Point> reformatPolygon(Point maintPoint) {
+    private List<Point> reformatPolygon(Point mainPoint) {
         int size = polygon.size();
         List<Point> result = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            if (maintPoint.equals(polygon.get(i))) {
+            if (mainPoint.equals(polygon.get(i))) {
                 result = polygon.subList(i, size);
                 result.addAll(polygon.subList(0, i));
                 break;

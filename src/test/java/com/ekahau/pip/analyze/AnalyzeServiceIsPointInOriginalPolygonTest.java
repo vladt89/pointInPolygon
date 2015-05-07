@@ -1,6 +1,7 @@
 package com.ekahau.pip.analyze;
 
 import com.ekahau.pip.common.Point;
+import com.ekahau.pip.geometry.GeometryServiceTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 /**
- * Test class for {@link AnalyzeService#isPointInPolygon(Point)}.
+ * Test class for {@link AnalyzeService#isPointInPolygon(Point)} method.
  *
  * @author vladimir.tikhomirov
  */
@@ -30,7 +31,7 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
     InputDataAnalyzer inputDataAnalyzer;
 
     /**
-     * Create simple convex pentagon.
+     * Create polygon based on the provided data.
      * @throws Exception -
      */
     @Before
@@ -40,24 +41,11 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
     }
 
     /**
-     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the points do not even belong to the angle
-     * of the first polygon point and it's neighbours.
+     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the points belong to the polygon.
      * @throws Exception -
      */
     @Test
-    public void testIsPointInPolygonWhenItIsNot() throws Exception {
-        //EXERCISE
-        final boolean result = analyzeService.isPointInPolygon(new Point(1, 1));
-        //VERIFY
-        Assert.assertFalse(result);
-    }
-
-    /**
-     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the point belongs to the polygon.
-     * @throws Exception -
-     */
-    @Test
-    public void testIsPointInPolygonWhenItIs() throws Exception {
+    public void testPointsInsidePolygon() throws Exception {
         //SETUP SUT
         List<Point> pointsInsidePolygon = inputDataAnalyzer.readFile(INSIDE_POINTS);
         //EXERCISE & VERIFY
@@ -67,12 +55,11 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
     }
 
     /**
-     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the point doesn't belong to the polygon,
-     * but it belongs to the angle of the first polygon point and it's neighbours.
+     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the points do not belong to the polygon.
      * @throws Exception -
      */
     @Test
-    public void testIsPointInPolygonWhenItIsNot2() throws Exception {
+    public void testPointsOutsidePolygon() throws Exception {
         //SETUP SUT
         List<Point> pointsOutsideOfPolygon = inputDataAnalyzer.readFile(OUTSIDE_POINTS);
 
@@ -82,24 +69,14 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
         }
     }
 
-//    @Test
-//    public void testFindLargestAcuteAngle() throws Exception {
-//        //EXERCISE
-//        final com.ekahau.pip.common.Point vertexWithTheLargestAcuteAngle = geometryService.sortedAcuteAngleMap();
-//
-//        //VERIFY
-//        Assert.assertEquals(1, vertexWithTheLargestAcuteAngle.getX(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
-//        Assert.assertEquals(5, vertexWithTheLargestAcuteAngle.getY(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
-//    }
+    @Test
+    public void testPreparePolygon() throws Exception {
+        //EXERCISE
+        analyzeService.preparePolygon(new Point(2, 2));
 
-//    @Test
-//    public void testPreparePolygon() throws Exception {
-//        //EXERCISE
-//        geometryService.preparePolygon(new com.ekahau.pip.common.Point(2, 2));
-//
-//        //VERIFY
-//        com.ekahau.pip.common.Point mainPoint = geometryService.getPolygon().get(0);
-//        Assert.assertEquals(2, mainPoint.getX(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
-//        Assert.assertEquals(1, mainPoint.getY(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
-//    }
+        //VERIFY
+        Point mainPoint = analyzeService.getPolygon().get(0);
+        Assert.assertEquals(1, mainPoint.getX(), GeometryServiceTest.DELTA);
+        Assert.assertEquals(5, mainPoint.getY(), GeometryServiceTest.DELTA);
+    }
 }

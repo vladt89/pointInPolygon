@@ -36,5 +36,11 @@ public interface AnalyzeService {
      */
     boolean isPointInPolygon(Point point);
 
+    /**
+     * Prepare the polygon. Means that it searches for the main point for localization algorithm
+     * based on the distances and angles from the vertexes of the polygon to the provided point.
+     *
+     * @param point point to analyze
+     */
     void preparePolygon(Point point);
 }
