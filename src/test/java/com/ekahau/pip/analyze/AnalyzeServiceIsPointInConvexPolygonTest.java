@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 /**
- * Test class for {@link AnalyzeService#isPointInConvexPolygon(Point)}.
+ * Test class for {@link AnalyzeService#isPointInConvexPolygon(Point)} method.
  *
  * @author vladimir.tikhomirov
  */
@@ -20,8 +20,9 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class AnalyzeServiceIsPointInConvexPolygonTest {
 
-    public static final String POLYGON_POINTS = "src/test/resources/convex/convexPolygonTest.txt";
-    public static final String OUTSIDE_POINTS = "src/test/resources/convex/outsidePoints.txt";
+    private static final String POLYGON_POINTS = "src/test/resources/convex/convexPolygonTest.txt";
+    private static final String OUTSIDE_POINTS = "src/test/resources/convex/outsidePoints.txt";
+    private static final String INSIDE_POINTS = "src/test/resources/convex/insidePoints.txt";
 
     @Autowired
     AnalyzeServiceImpl analyzeService;
@@ -39,8 +40,7 @@ public class AnalyzeServiceIsPointInConvexPolygonTest {
     }
 
     /**
-     * Tests {@link AnalyzeService#isPointInConvexPolygon(Point)} when the points do not even belong to the angle
-     * of the first polygon point and it's neighbours.
+     * Tests {@link AnalyzeService#isPointInConvexPolygon(Point)} when the points do not even belong to the polygon.
      * @throws Exception -
      */
     @Test
@@ -55,37 +55,17 @@ public class AnalyzeServiceIsPointInConvexPolygonTest {
     }
 
     /**
-     * Tests {@link AnalyzeService#isPointInConvexPolygon(Point)} when the point belongs to the polygon.
+     * Tests {@link AnalyzeService#isPointInConvexPolygon(Point)} when the points belong to the polygon.
      * @throws Exception -
      */
     @Test
     public void testIsPointInPolygonWhenItIs() throws Exception {
-        //EXERCISE
-        final boolean result = analyzeService.isPointInConvexPolygon(new Point(3, 2));
-        //VERIFY
-        Assert.assertTrue(result);
-    }
+        //SETUP SUT
+        List<Point> pointsOutsideOfPolygon = inputDataAnalyzer.readFile(INSIDE_POINTS);
 
-    /**
-     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the point doesn't belong to the polygon,
-     * but it belongs to the angle of the first polygon point and it's neighbours.
-     * @throws Exception -
-     */
-    @Test
-    public void testIsPointInPolygonWhenItIsNot2() throws Exception {
-        //EXERCISE
-        final boolean result = analyzeService.isPointInConvexPolygon(new Point(2, 6));
-        //VERIFY
-        Assert.assertFalse(result);
+        //EXERCISE & VERIFY
+        for (Point pointToVerify : pointsOutsideOfPolygon) {
+            Assert.assertTrue(analyzeService.isPointInConvexPolygon(pointToVerify));
+        }
     }
-
-//    @Test
-//    public void testFindLargestAcuteAngle() throws Exception {
-//        //EXERCISE
-//        final Point vertexWithTheLargestAcuteAngle = geometryService.sortedAcuteAngleMap();
-//
-//        //VERIFY
-//        Assert.assertEquals(5, vertexWithTheLargestAcuteAngle.getX(), GeometryServiceTest.DELTA);
-//        Assert.assertEquals(2, vertexWithTheLargestAcuteAngle.getY(), GeometryServiceTest.DELTA);
-//    }
 }
