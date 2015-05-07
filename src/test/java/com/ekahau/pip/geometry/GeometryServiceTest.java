@@ -1,5 +1,6 @@
-package com.ekahau.pip.analyze;
+package com.ekahau.pip.geometry;
 
+import com.ekahau.pip.analyze.Direction;
 import com.ekahau.pip.common.Point;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,17 +11,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Class test for {@link AnalyzeService}.
+ * Class test for {@link com.ekahau.pip.geometry.GeometryService}.
  *
  * @author vladimir.tikhomirov
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
-public class AnalyzeServiceTest {
+public class GeometryServiceTest {
 
     public static final double DELTA = 0.01;
     @Autowired
-    AnalyzeServiceImpl analyzeService;
+    GeometryServiceImpl geometryService;
 
     Point from;
     Point to;
@@ -36,7 +37,7 @@ public class AnalyzeServiceTest {
     }
 
     /**
-     * Tests {@link AnalyzeService#analyzePoint(Point, Point, Point)} when the pointToAnalyze
+     * Tests {@link GeometryServiceImpl#analyzePoint(Point, Point, Point)} when the pointToAnalyze
      * is in the left side from the direction of the vector AB (A = from, B = to).
      * @throws Exception -
      */
@@ -46,14 +47,14 @@ public class AnalyzeServiceTest {
         Point pointToAnalyze = new Point(3, 1);
 
         //EXERCISE
-        final Direction direction = analyzeService.analyzePoint(from, to, pointToAnalyze);
+        final Direction direction = geometryService.analyzePoint(from, to, pointToAnalyze);
 
         //VERIFY
         Assert.assertEquals(Direction.LEFT, direction);
     }
 
     /**
-     * Tests {@link AnalyzeService#analyzePoint(Point, Point, Point)} when the pointToAnalyze
+     * Tests {@link GeometryServiceImpl#analyzePoint(Point, Point, Point)} when the pointToAnalyze
      * is in the right side from the direction of the vector AB (A = from, B = to).
      * @throws Exception -
      */
@@ -63,14 +64,14 @@ public class AnalyzeServiceTest {
         Point pointToAnalyze = new Point(1, 4);
 
         //EXERCISE
-        final Direction direction = analyzeService.analyzePoint(from, to, pointToAnalyze);
+        final Direction direction = geometryService.analyzePoint(from, to, pointToAnalyze);
 
         //VERIFY
         Assert.assertEquals(Direction.RIGHT, direction);
     }
 
     /**
-     * Tests {@link AnalyzeService#analyzePoint(Point, Point, Point)} when the pointToAnalyze
+     * Tests {@link GeometryServiceImpl#analyzePoint(Point, Point, Point)} when the pointToAnalyze
      * is in the right side from the direction of the vector AB (A = from, B = to).
      * @throws Exception -
      */
@@ -80,14 +81,14 @@ public class AnalyzeServiceTest {
         Point pointToAnalyze = new Point(3, 4);
 
         //EXERCISE
-        final Direction direction = analyzeService.analyzePoint(from, to, pointToAnalyze);
+        final Direction direction = geometryService.analyzePoint(from, to, pointToAnalyze);
 
         //VERIFY
         Assert.assertEquals(Direction.SAME, direction);
     }
 
     /**
-     * Tests {@link AnalyzeService#isSegmentIntersection(Point, Point, Point, Point)} when two segments
+     * Tests {@link GeometryServiceImpl#isSegmentIntersection(Point, Point, Point, Point)} when two segments
      * AB and CD (C = segmentToAnalyzeFrom, D = segmentToAnalyzeTo) are intersected.
      * @throws Exception -
      */
@@ -98,14 +99,14 @@ public class AnalyzeServiceTest {
         Point segmentToAnalyzeTo = new Point(1, 4);
 
         //EXERCISE
-        final boolean result = analyzeService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
+        final boolean result = geometryService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
 
         //VERIFY
         Assert.assertTrue(result);
     }
 
     /**
-     * Tests {@link AnalyzeService#isSegmentIntersection(Point, Point, Point, Point)} when two segments
+     * Tests {@link GeometryServiceImpl#isSegmentIntersection(Point, Point, Point, Point)} when two segments
      * AB and CD (C = segmentToAnalyzeFrom, D = segmentToAnalyzeTo) are not intersected.
      * @throws Exception -
      */
@@ -116,7 +117,7 @@ public class AnalyzeServiceTest {
         Point segmentToAnalyzeTo = new Point(4, 3);
 
         //EXERCISE
-        final boolean result = analyzeService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
+        final boolean result = geometryService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
 
         //VERIFY
         Assert.assertFalse(result);
@@ -131,7 +132,7 @@ public class AnalyzeServiceTest {
         Point anotherLineEnd = new Point(1, 4);
 
         //EXERCISE
-        double angle = analyzeService.angleBetweenTwoLines(anotherLinesStart, anotherLineEnd, lineStart, lineEnd);
+        double angle = geometryService.angleBetweenTwoLines(anotherLinesStart, anotherLineEnd, lineStart, lineEnd);
 
         //VERIFY
         Assert.assertEquals(90, angle, DELTA);

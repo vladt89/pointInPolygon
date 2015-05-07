@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Class which is responsible for input each validation and parsing.
+ * Class which is responsible for input point validation and parsing.
  *
  * @author vladimir.tikhomirov
  */

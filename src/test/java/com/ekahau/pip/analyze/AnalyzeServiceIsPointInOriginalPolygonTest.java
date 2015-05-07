@@ -1,8 +1,5 @@
 package com.ekahau.pip.analyze;
 
-import com.ekahau.pip.analyze.AnalyzeService;
-import com.ekahau.pip.analyze.AnalyzeServiceImpl;
-import com.ekahau.pip.analyze.InputDataAnalyzer;
 import com.ekahau.pip.common.Point;
 import org.junit.Assert;
 import org.junit.Before;
@@ -88,21 +85,21 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
 //    @Test
 //    public void testFindLargestAcuteAngle() throws Exception {
 //        //EXERCISE
-//        final com.ekahau.pip.common.Point vertexWithTheLargestAcuteAngle = analyzeService.sortedAcuteAngleMap();
+//        final com.ekahau.pip.common.Point vertexWithTheLargestAcuteAngle = geometryService.sortedAcuteAngleMap();
 //
 //        //VERIFY
-//        Assert.assertEquals(1, vertexWithTheLargestAcuteAngle.getX(), com.ekahau.pip.analyze.AnalyzeServiceTest.DELTA);
-//        Assert.assertEquals(5, vertexWithTheLargestAcuteAngle.getY(), com.ekahau.pip.analyze.AnalyzeServiceTest.DELTA);
+//        Assert.assertEquals(1, vertexWithTheLargestAcuteAngle.getX(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
+//        Assert.assertEquals(5, vertexWithTheLargestAcuteAngle.getY(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
 //    }
 
 //    @Test
 //    public void testPreparePolygon() throws Exception {
 //        //EXERCISE
-//        analyzeService.preparePolygon(new com.ekahau.pip.common.Point(2, 2));
+//        geometryService.preparePolygon(new com.ekahau.pip.common.Point(2, 2));
 //
 //        //VERIFY
-//        com.ekahau.pip.common.Point mainPoint = analyzeService.getPolygon().get(0);
-//        Assert.assertEquals(2, mainPoint.getX(), com.ekahau.pip.analyze.AnalyzeServiceTest.DELTA);
-//        Assert.assertEquals(1, mainPoint.getY(), com.ekahau.pip.analyze.AnalyzeServiceTest.DELTA);
+//        com.ekahau.pip.common.Point mainPoint = geometryService.getPolygon().get(0);
+//        Assert.assertEquals(2, mainPoint.getX(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
+//        Assert.assertEquals(1, mainPoint.getY(), com.ekahau.pip.geometry.GeometryServiceTest.DELTA);
 //    }
 }

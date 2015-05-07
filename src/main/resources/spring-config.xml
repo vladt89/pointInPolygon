@@ -9,6 +9,11 @@
        </bean>
 
        <bean name="inputDataAnalyzer" class="com.ekahau.pip.analyze.InputDataAnalyzer"/>
-       <bean name="analyzeService" class="com.ekahau.pip.analyze.AnalyzeServiceImpl"/>
+
+       <bean name="analyzeService" class="com.ekahau.pip.analyze.AnalyzeServiceImpl">
+              <property name="geometryService" ref="geometryService"/>
+       </bean>
+
+       <bean name="geometryService" class="com.ekahau.pip.geometry.GeometryServiceImpl"/>
 
 </beans>

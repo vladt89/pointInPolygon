@@ -1,107 +1,21 @@
 package com.ekahau.pip.analyze;
 
 import com.ekahau.pip.common.Point;
+import com.ekahau.pip.geometry.GeometryService;
+import com.ekahau.pip.geometry.GeometryServiceImpl;
 
 import java.util.*;
 
 /**
+ * Class is responsible for polygon analysis and point localization.
+ *
  * @author vladimir.tikhomirov
  */
 public class AnalyzeServiceImpl implements AnalyzeService {
 
-    public static final int STRAIGHT_ANGLE = 180;
+    private GeometryService geometryService;
+
     List<Point> polygon = new LinkedList<>();
-
-    @Override
-    public Direction analyzePoint(Point from, Point to, Point pointToAnalyze) {
-        final double result = analyzeDirection(from, to, pointToAnalyze);
-
-        if (result > 0) {
-            return Direction.RIGHT;
-        } else if (result < 0) {
-            return Direction.LEFT;
-        }
-        // case when result == 0
-        return Direction.SAME;
-    }
-
-    @Override
-    public double angleBetweenTwoLines(Point lineStart, Point lineEnd, Point anotherLineStart, Point anotherLineEnd) {
-
-        double angle1 = Math.atan2(lineStart.getY() - lineEnd.getY(), lineStart.getX() - lineEnd.getX());
-
-        double angle2 = Math.atan2(anotherLineStart.getY() - anotherLineEnd.getY(), anotherLineStart.getX() - anotherLineEnd.getX());
-
-        double result = angle1 - angle2;
-
-        double degrees = Math.toDegrees(result);
-
-        if (degrees < 0) {
-            degrees += STRAIGHT_ANGLE * 2;
-        }
-        return degrees;
-    }
-
-    public Map<Point, Double> sortedAcuteAngleMap() {
-        Point startPoint = polygon.get(0);
-        double angleForStartPoint = angleBetweenTwoLines(startPoint, polygon.get(polygon.size() - 1),
-                startPoint, polygon.get(1));
-        double maxAngle = angleForStartPoint < STRAIGHT_ANGLE ? angleForStartPoint : 0;
-
-        Map<Point, Double> pointToAngleMap = new HashMap<>();
-        pointToAngleMap.put(startPoint, maxAngle);
-        for (int i = 1; i < polygon.size(); i++) {
-            final Point centerPoint = polygon.get(i);
-            double angle;
-            if (i + 1 == polygon.size()) {
-                angle = angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, startPoint);
-                if (maxAngle < angle && angle < STRAIGHT_ANGLE) {
-                    pointToAngleMap.put(centerPoint, angle);
-                    return pointToAngleMap;
-                }
-                break;
-            }
-            angle = angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(i + 1));
-            if (maxAngle < angle && angle < STRAIGHT_ANGLE) {
-                pointToAngleMap.put(centerPoint, angle);
-                maxAngle = angle;
-            }
-        }
-        return sortMapByValue(pointToAngleMap);
-    }
-
-    private Map<Point, Double> sortMapByValue(Map<Point, Double> pointToAngle) {
-        List<Map.Entry<Point, Double>> list = new LinkedList<>(pointToAngle.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<Point, Double>>() {
-            @Override
-            public int compare(Map.Entry<Point, Double> o1, Map.Entry<Point, Double> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        Map<Point, Double> sortedPointToDistanceMapByDistance = new LinkedHashMap<>();
-        for (Map.Entry<Point, Double> entry : list) {
-            sortedPointToDistanceMapByDistance.put(entry.getKey(), entry.getValue());
-        }
-        return sortedPointToDistanceMapByDistance;
-    }
-
-    @Override
-    public boolean isSegmentIntersection(Point segmentFrom, Point segmentTo, Point anotherSegmentFrom, Point anotherSegmentTo) {
-
-        final double result1 = analyzeDirection(segmentFrom, segmentTo, anotherSegmentFrom)
-                * analyzeDirection(segmentFrom, segmentTo, anotherSegmentTo);
-
-        final double result2 = analyzeDirection(anotherSegmentFrom, anotherSegmentTo, segmentFrom)
-                * analyzeDirection(anotherSegmentFrom, anotherSegmentTo, segmentTo);
-
-         return result1 <= 0 && result2 < 0;
-    }
-
-    private double analyzeDirection(Point from, Point to, Point pointToAnalyze) {
-        return (to.getX() - from.getX()) * (pointToAnalyze.getY() - to.getY())
-                - (to.getY() - from.getY()) * (pointToAnalyze.getX() - to.getX());
-    }
 
     @Override
     public boolean isPointInPolygon(Point pointToAnalyze) {
@@ -115,21 +29,21 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         int length = polygon.size();
         final int lastVertex = length - 1;
         //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
-        if (analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
-                || analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
+        if (geometryService.analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
+                || geometryService.analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
             return false;
         }
 
         int count = 0;
         for (int i = 0; i < length; i++) {
             if (i + 1 == length) {
-                if (isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(0))) {
+                if (geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(0))) {
                     count++;
                 }
                 break;
             }
 
-            if (isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(i + 1))) {
+            if (geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(i + 1))) {
                 count++;
             }
         }
@@ -144,8 +58,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         final int lastVertex = polygon.size() - 1;
 
         //first we check if the provided point is included in the angle which is made by mainPoint and neighbour points
-        if (analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
-                || analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
+        if (geometryService.analyzePoint(mainPoint, polygon.get(1), pointToAnalyze) == Direction.LEFT
+                || geometryService.analyzePoint(mainPoint, polygon.get(lastVertex), pointToAnalyze) == Direction.RIGHT) {
             return false;
         }
 
@@ -154,7 +68,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         while (r - p > 1) {
             //find middle vertex
             int q = (p + r) / 2;
-            if (analyzePoint(mainPoint, polygon.get(q), pointToAnalyze) == Direction.LEFT) {
+            if (geometryService.analyzePoint(mainPoint, polygon.get(q), pointToAnalyze) == Direction.LEFT) {
                 r = q;
             } else {
                 p = q;
@@ -162,7 +76,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         //if segments are not intersected then the point is inside polygon
-        return !isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(p), polygon.get(r));
+        return !geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(p), polygon.get(r));
     }
 
     @Override
@@ -212,8 +126,51 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             double distance = point.distance(pointToAnalyze);
             pointToDistance.put(point, distance);
         }
-
         return sortMapByValue(pointToDistance);
+    }
+
+    private Map<Point, Double> sortedAcuteAngleMap() {
+        Point startPoint = polygon.get(0);
+        double angleForStartPoint = geometryService.angleBetweenTwoLines(startPoint, polygon.get(polygon.size() - 1),
+                startPoint, polygon.get(1));
+        double maxAngle = angleForStartPoint < GeometryServiceImpl.STRAIGHT_ANGLE ? angleForStartPoint : 0;
+
+        Map<Point, Double> pointToAngleMap = new HashMap<>();
+        pointToAngleMap.put(startPoint, maxAngle);
+        for (int i = 1; i < polygon.size(); i++) {
+            final Point centerPoint = polygon.get(i);
+            double angle;
+            if (i + 1 == polygon.size()) {
+                angle = geometryService.angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, startPoint);
+                if (maxAngle < angle && angle < GeometryServiceImpl.STRAIGHT_ANGLE) {
+                    pointToAngleMap.put(centerPoint, angle);
+                    return pointToAngleMap;
+                }
+                break;
+            }
+            angle = geometryService.angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(i + 1));
+            if (maxAngle < angle && angle < GeometryServiceImpl.STRAIGHT_ANGLE) {
+                pointToAngleMap.put(centerPoint, angle);
+                maxAngle = angle;
+            }
+        }
+        return sortMapByValue(pointToAngleMap);
+    }
+
+    private Map<Point, Double> sortMapByValue(Map<Point, Double> pointToAngle) {
+        List<Map.Entry<Point, Double>> list = new LinkedList<>(pointToAngle.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Point, Double>>() {
+            @Override
+            public int compare(Map.Entry<Point, Double> o1, Map.Entry<Point, Double> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        Map<Point, Double> sortedPointToDistanceMapByDistance = new LinkedHashMap<>();
+        for (Map.Entry<Point, Double> entry : list) {
+            sortedPointToDistanceMapByDistance.put(entry.getKey(), entry.getValue());
+        }
+        return sortedPointToDistanceMapByDistance;
     }
 
     public void setPolygon(List<Point> polygon) {
@@ -222,5 +179,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     public List<Point> getPolygon() {
         return polygon;
+    }
+
+    public void setGeometryService(GeometryServiceImpl geometryService) {
+        this.geometryService = geometryService;
     }
 }
