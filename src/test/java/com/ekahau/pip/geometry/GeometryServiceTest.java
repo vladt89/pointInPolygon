@@ -99,10 +99,10 @@ public class GeometryServiceTest {
         Point segmentToAnalyzeTo = new Point(1, 4);
 
         //EXERCISE
-        final boolean result = geometryService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
+        final SegmentStatus result = geometryService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
 
         //VERIFY
-        Assert.assertTrue(result);
+        Assert.assertEquals(SegmentStatus.INTERSECTED, result);
     }
 
     /**
@@ -117,10 +117,10 @@ public class GeometryServiceTest {
         Point segmentToAnalyzeTo = new Point(4, 3);
 
         //EXERCISE
-        final boolean result = geometryService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
+        final SegmentStatus result = geometryService.isSegmentIntersection(from, to, segmentToAnalyzeFrom, segmentToAnalyzeTo);
 
         //VERIFY
-        Assert.assertFalse(result);
+        Assert.assertEquals(SegmentStatus.NON_INTERSECTED, result);
     }
 
     @Test

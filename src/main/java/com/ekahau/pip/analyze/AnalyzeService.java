@@ -33,7 +33,9 @@ public interface AnalyzeService {
      * the polygon.
      *
      * @param point point to analyze
-     * @return {@code true} if point belongs to polygon. {@code false} otherwise
+     * @return {@code Location.INSIDE} if point belongs to polygon,
+     *         {@code Location.BORDER} if point belongs to the border line of the polygon,
+     *         {@code Location.OUTSIDE} otherwise
      */
     Location isPointInPolygon(Point point);
 

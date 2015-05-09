@@ -4,6 +4,7 @@ import com.ekahau.pip.common.Location;
 import com.ekahau.pip.common.Point;
 import com.ekahau.pip.geometry.GeometryService;
 import com.ekahau.pip.geometry.GeometryServiceImpl;
+import com.ekahau.pip.geometry.SegmentStatus;
 
 import java.util.*;
 
@@ -34,12 +35,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         int count = 0;
         for (int i = 0; i < length; i++) {
             if (i + 1 == length) {
-                if (geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), mainPoint)) {
+                if (SegmentStatus.INTERSECTED == geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), mainPoint)) {
                     count++;
                 }
                 break;
             }
-            if (geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(i + 1))) {
+            if (SegmentStatus.INTERSECTED == geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(i), polygon.get(i + 1))) {
                 count++;
             }
         }
@@ -85,7 +86,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         //if segments are not intersected then the point is inside polygon
-        return !geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(p), polygon.get(r));
+        return SegmentStatus.NON_INTERSECTED == geometryService.isSegmentIntersection(mainPoint, pointToAnalyze, polygon.get(p), polygon.get(r));
     }
 
     @Override

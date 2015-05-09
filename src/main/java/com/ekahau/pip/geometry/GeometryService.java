@@ -40,8 +40,8 @@ public interface GeometryService {
      * @param segmentTo ending point B of the segment AB
      * @param anotherSegmentFrom beginning point C of the segment CD
      * @param anotherSegmentTo ending point D of the segment CD
-     * @return {@code true} if segments AB and CD were intersected, {@code false} otherwise
+     * @return intersected, non intersected or parallel
      */
-    boolean isSegmentIntersection(Point segmentFrom, Point segmentTo, Point anotherSegmentFrom, Point anotherSegmentTo);
+    SegmentStatus isSegmentIntersection(Point segmentFrom, Point segmentTo, Point anotherSegmentFrom, Point anotherSegmentTo);
 
 }

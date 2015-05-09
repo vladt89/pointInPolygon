@@ -74,7 +74,7 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
 
     /**
      * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the points belong to the polygon,
-     * but they are on the border line of the polygon
+     * but they are on the border line of the polygon.
      * @throws Exception -
      */
     @Test

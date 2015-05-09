@@ -41,7 +41,7 @@ public class GeometryServiceImpl implements GeometryService {
     }
 
     @Override
-    public boolean isSegmentIntersection(Point segmentFrom, Point segmentTo, Point anotherSegmentFrom, Point anotherSegmentTo) {
+    public SegmentStatus isSegmentIntersection(Point segmentFrom, Point segmentTo, Point anotherSegmentFrom, Point anotherSegmentTo) {
 
         final double result1 = analyzeDirection(segmentFrom, segmentTo, anotherSegmentFrom)
                 * analyzeDirection(segmentFrom, segmentTo, anotherSegmentTo);
@@ -49,7 +49,12 @@ public class GeometryServiceImpl implements GeometryService {
         final double result2 = analyzeDirection(anotherSegmentFrom, anotherSegmentTo, segmentFrom)
                 * analyzeDirection(anotherSegmentFrom, anotherSegmentTo, segmentTo);
 
-        return result1 <= 0 && result2 < 0;
+        boolean result = result1 <= 0 && result2 < 0;
+        if (result) {
+            return SegmentStatus.INTERSECTED;
+        } else {
+            return SegmentStatus.NON_INTERSECTED;
+        }
     }
 
     private double analyzeDirection(Point from, Point to, Point pointToAnalyze) {
