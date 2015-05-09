@@ -1,6 +1,7 @@
 package com.ekahau.pip.analyze;
 
 import com.ekahau.pip.common.Point;
+import com.ekahau.pip.geometry.GeometryServiceTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,14 +69,19 @@ public class AnalyzeServiceIsPointInNonconvexPolygon {
         }
     }
 
-//    @Test
-//    public void testPreparePolygon() throws Exception {
-//        //EXERCISE
-//        analyzeService.preparePolygon(new Point(2, 2));
-//
-//        //VERIFY
-//        Point mainPoint = analyzeService.getPolygon().get(0);
-//        Assert.assertEquals(1, mainPoint.getX(), GeometryServiceTest.DELTA);
-//        Assert.assertEquals(5, mainPoint.getY(), GeometryServiceTest.DELTA);
-//    }
+    /**
+     * Tests {@link AnalyzeService#preparePolygon(Point)} which sorts the polygon in a way
+     * that main point stays on the first place in the list.
+     * @throws Exception -
+     */
+    @Test
+    public void testPreparePolygon() throws Exception {
+        //EXERCISE
+        analyzeService.preparePolygon(new Point(2, 2));
+
+        //VERIFY
+        Point mainPoint = analyzeService.getPolygon().get(0);
+        Assert.assertEquals(1, mainPoint.getX(), GeometryServiceTest.DELTA);
+        Assert.assertEquals(2, mainPoint.getY(), GeometryServiceTest.DELTA);
+    }
 }

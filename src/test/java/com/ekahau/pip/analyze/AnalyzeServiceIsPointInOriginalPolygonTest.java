@@ -69,6 +69,11 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
         }
     }
 
+    /**
+     * Tests {@link AnalyzeService#preparePolygon(Point)} which sorts the polygon in a way
+     * that main point stays on the first place in the list.
+     * @throws Exception -
+     */
     @Test
     public void testPreparePolygon() throws Exception {
         //EXERCISE
@@ -76,7 +81,7 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
 
         //VERIFY
         Point mainPoint = analyzeService.getPolygon().get(0);
-        Assert.assertEquals(1, mainPoint.getX(), GeometryServiceTest.DELTA);
-        Assert.assertEquals(5, mainPoint.getY(), GeometryServiceTest.DELTA);
+        Assert.assertEquals(2, mainPoint.getX(), GeometryServiceTest.DELTA);
+        Assert.assertEquals(1, mainPoint.getY(), GeometryServiceTest.DELTA);
     }
 }

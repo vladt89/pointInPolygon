@@ -135,29 +135,34 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return sortMapByValue(pointToDistance);
     }
 
+    /**
+     * Creates a map from Points to Angles with the acute angles, however, here we call acute angles as angles
+     * which have values from 0 to 180 degrees.
+     * @return sorted map
+     */
     private Map<Point, Double> sortedAcuteAngleMap() {
-        Point startPoint = polygon.get(0);
-        double angleForStartPoint = geometryService.angleBetweenTwoLines(startPoint, polygon.get(polygon.size() - 1),
-                startPoint, polygon.get(1));
-        double maxAngle = angleForStartPoint < GeometryServiceImpl.STRAIGHT_ANGLE ? angleForStartPoint : 0;
+        Point mainPoint = polygon.get(0);
+        double angleForStartPoint = geometryService.angleBetweenTwoLines(mainPoint, polygon.get(polygon.size() - 1),
+                mainPoint, polygon.get(1));
+        double mainAngle = angleForStartPoint < GeometryServiceImpl.STRAIGHT_ANGLE ? angleForStartPoint : 0;
 
         Map<Point, Double> pointToAngleMap = new HashMap<>();
-        pointToAngleMap.put(startPoint, maxAngle);
+        pointToAngleMap.put(mainPoint, mainAngle);
         for (int i = 1; i < polygon.size(); i++) {
             final Point centerPoint = polygon.get(i);
             double angle;
             if (i + 1 == polygon.size()) {
-                angle = geometryService.angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, startPoint);
-                if (maxAngle < angle && angle < GeometryServiceImpl.STRAIGHT_ANGLE) {
+                angle = geometryService.angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, mainPoint);
+                if (mainAngle < angle && angle < GeometryServiceImpl.STRAIGHT_ANGLE) {
                     pointToAngleMap.put(centerPoint, angle);
+                    sortMapByValue(pointToAngleMap);
                     return pointToAngleMap;
                 }
                 break;
             }
             angle = geometryService.angleBetweenTwoLines(centerPoint, polygon.get(i - 1), centerPoint, polygon.get(i + 1));
-            if (maxAngle < angle && angle < GeometryServiceImpl.STRAIGHT_ANGLE) {
+            if (mainAngle < angle && angle < GeometryServiceImpl.STRAIGHT_ANGLE) {
                 pointToAngleMap.put(centerPoint, angle);
-                maxAngle = angle;
             }
         }
         return sortMapByValue(pointToAngleMap);
