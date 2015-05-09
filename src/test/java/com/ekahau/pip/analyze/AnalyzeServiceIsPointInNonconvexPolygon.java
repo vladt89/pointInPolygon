@@ -1,5 +1,6 @@
 package com.ekahau.pip.analyze;
 
+import com.ekahau.pip.common.Location;
 import com.ekahau.pip.common.Point;
 import com.ekahau.pip.geometry.GeometryServiceTest;
 import org.junit.Assert;
@@ -50,7 +51,7 @@ public class AnalyzeServiceIsPointInNonconvexPolygon {
         List<Point> pointsInsidePolygon = inputDataAnalyzer.readFile(INSIDE_POINTS);
         //EXERCISE & VERIFY
         for (Point pointToVerify : pointsInsidePolygon) {
-            Assert.assertTrue(analyzeService.isPointInPolygon(pointToVerify));
+            Assert.assertEquals(Location.INSIDE, analyzeService.isPointInPolygon(pointToVerify));
         }
     }
 
@@ -65,7 +66,7 @@ public class AnalyzeServiceIsPointInNonconvexPolygon {
 
         //EXERCISE & VERIFY
         for (Point pointToVerify : pointsOutsideOfPolygon) {
-            Assert.assertFalse(analyzeService.isPointInPolygon(pointToVerify));
+            Assert.assertEquals(Location.OUTSIDE, analyzeService.isPointInPolygon(pointToVerify));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.ekahau.pip.analyze;
 
+import com.ekahau.pip.common.Location;
 import com.ekahau.pip.common.Point;
 import com.ekahau.pip.geometry.GeometryService;
 import com.ekahau.pip.geometry.GeometryServiceImpl;
@@ -18,15 +19,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     List<Point> polygon = new LinkedList<>();
 
     @Override
-    public boolean isPointInPolygon(Point pointToAnalyze) {
+    public Location isPointInPolygon(Point pointToAnalyze) {
         preparePolygon(pointToAnalyze);
 
         if (polygon.contains(pointToAnalyze)) {
-            return true;
+            return Location.BORDER;
         }
         final Point mainPoint = polygon.get(0);
         if (isPointInMainAngle(pointToAnalyze, mainPoint)) {
-            return false;
+            return Location.OUTSIDE;
         }
 
         int length = polygon.size();
@@ -42,7 +43,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 count++;
             }
         }
-        return count % 2 == 0;
+
+        boolean result = count % 2 == 0;
+        return result ? Location.INSIDE : Location.OUTSIDE;
     }
 
     /**

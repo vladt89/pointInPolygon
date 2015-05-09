@@ -1,5 +1,6 @@
 package com.ekahau.pip.analyze;
 
+import com.ekahau.pip.common.Location;
 import com.ekahau.pip.common.Point;
 import com.ekahau.pip.geometry.GeometryServiceTest;
 import org.junit.Assert;
@@ -21,9 +22,11 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class AnalyzeServiceIsPointInOriginalPolygonTest {
 
-    public static final String POLYGON_POINTS = "src/test/resources/original/originalPolygonTest.txt";
-    public static final String OUTSIDE_POINTS = "src/test/resources/original/outsidePoints.txt";
-    public static final String INSIDE_POINTS = "src/test/resources/original/insidePoints.txt";
+    private static final String folder = "src/test/resources/original/";
+    private static final String POLYGON_POINTS = folder + "originalPolygonTest.txt";
+    private static final String OUTSIDE_POINTS = folder + "outsidePoints.txt";
+    private static final String INSIDE_POINTS = folder + "insidePoints.txt";
+    private static final String BORDER_POINTS = folder + "borderPoints.txt";;
 
     @Autowired
     AnalyzeServiceImpl analyzeService;
@@ -50,7 +53,7 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
         List<Point> pointsInsidePolygon = inputDataAnalyzer.readFile(INSIDE_POINTS);
         //EXERCISE & VERIFY
         for (Point pointToVerify : pointsInsidePolygon) {
-            Assert.assertTrue(analyzeService.isPointInPolygon(pointToVerify));
+            Assert.assertEquals(Location.INSIDE, analyzeService.isPointInPolygon(pointToVerify));
         }
     }
 
@@ -65,7 +68,22 @@ public class AnalyzeServiceIsPointInOriginalPolygonTest {
 
         //EXERCISE & VERIFY
         for (Point pointToVerify : pointsOutsideOfPolygon) {
-            Assert.assertFalse(analyzeService.isPointInPolygon(pointToVerify));
+            Assert.assertEquals(Location.OUTSIDE, analyzeService.isPointInPolygon(pointToVerify));
+        }
+    }
+
+    /**
+     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the points belong to the polygon,
+     * but they are on the border line of the polygon
+     * @throws Exception -
+     */
+    @Test
+    public void testPointsOnBorderLineOfPolygon() throws Exception {
+        //SETUP SUT
+        List<Point> pointsInsidePolygon = inputDataAnalyzer.readFile(BORDER_POINTS);
+        //EXERCISE & VERIFY
+        for (Point pointToVerify : pointsInsidePolygon) {
+            Assert.assertEquals(Location.BORDER, analyzeService.isPointInPolygon(pointToVerify));
         }
     }
 

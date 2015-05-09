@@ -1,5 +1,6 @@
 package com.ekahau.pip.analyze;
 
+import com.ekahau.pip.common.Location;
 import com.ekahau.pip.common.Point;
 
 /**
@@ -34,7 +35,7 @@ public interface AnalyzeService {
      * @param point point to analyze
      * @return {@code true} if point belongs to polygon. {@code false} otherwise
      */
-    boolean isPointInPolygon(Point point);
+    Location isPointInPolygon(Point point);
 
     /**
      * Prepare the polygon. Means that it searches for the main point for localization algorithm
