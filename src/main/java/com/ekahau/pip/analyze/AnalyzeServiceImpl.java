@@ -6,6 +6,7 @@ import com.ekahau.pip.geometry.GeometryService;
 import com.ekahau.pip.geometry.GeometryServiceImpl;
 import com.ekahau.pip.geometry.SegmentStatus;
 
+import java.awt.geom.Line2D;
 import java.util.*;
 
 /**
@@ -23,7 +24,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public Location isPointInPolygon(Point pointToAnalyze) {
         preparePolygon(pointToAnalyze);
 
-        if (polygon.contains(pointToAnalyze)) {
+        if (polygon.contains(pointToAnalyze) || isPointOnTheBorder(pointToAnalyze)) {
             return Location.BORDER;
         }
         final Point mainPoint = polygon.get(0);
@@ -47,6 +48,30 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         boolean result = count % 2 == 0;
         return result ? Location.INSIDE : Location.OUTSIDE;
+    }
+
+    private boolean isPointOnTheBorder(Point pointToAnalyze) {
+        int length = polygon.size();
+        for (int i = 0; i < length; i++) {
+            if (i + 1 == length) {
+                double ptSegDist = Line2D.ptSegDist(
+                        polygon.get(i).getX(), polygon.get(i).getY(),
+                        polygon.get(0).getX(), polygon.get(0).getY(),
+                        pointToAnalyze.getX(), pointToAnalyze.getY());
+                if (ptSegDist == 0.0) {
+                    return true;
+                }
+                break;
+            }
+            double ptSegDist = Line2D.ptSegDist(
+                    polygon.get(i).getX(), polygon.get(i).getY(),
+                    polygon.get(i + 1).getX(), polygon.get(i + 1).getY(),
+                    pointToAnalyze.getX(), pointToAnalyze.getY());
+            if (ptSegDist == 0.0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

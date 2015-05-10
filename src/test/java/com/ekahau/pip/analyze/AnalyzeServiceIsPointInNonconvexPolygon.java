@@ -22,9 +22,11 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class AnalyzeServiceIsPointInNonconvexPolygon {
 
-    public static final String POLYGON_POINTS = "src/test/resources/nonconvex/nonconvexPolygonTest.txt";
-    public static final String OUTSIDE_POINTS = "src/test/resources/nonconvex/outsidePoints.txt";
-    public static final String INSIDE_POINTS = "src/test/resources/nonconvex/insidePoints.txt";
+    private static final String FOLDER = "src/test/resources/nonconvex/";
+    private static final String POLYGON_POINTS = FOLDER + "nonconvexPolygonTest.txt";
+    private static final String OUTSIDE_POINTS = FOLDER + "outsidePoints.txt";
+    private static final String INSIDE_POINTS = FOLDER + "insidePoints.txt";
+    private static final String BORDER_POINTS = FOLDER + "borderPoints.txt";
 
     @Autowired
     AnalyzeServiceImpl analyzeService;
@@ -67,6 +69,21 @@ public class AnalyzeServiceIsPointInNonconvexPolygon {
         //EXERCISE & VERIFY
         for (Point pointToVerify : pointsOutsideOfPolygon) {
             Assert.assertEquals(Location.OUTSIDE, analyzeService.isPointInPolygon(pointToVerify));
+        }
+    }
+
+    /**
+     * Tests {@link AnalyzeService#isPointInPolygon(Point)} when the points belong to the polygon,
+     * but they are on the border line of the polygon.
+     * @throws Exception -
+     */
+    @Test
+    public void testPointsOnBorderLineOfPolygon() throws Exception {
+        //SETUP SUT
+        List<Point> pointsInsidePolygon = inputDataAnalyzer.readFile(BORDER_POINTS);
+        //EXERCISE & VERIFY
+        for (Point pointToVerify : pointsInsidePolygon) {
+            Assert.assertEquals(Location.BORDER, analyzeService.isPointInPolygon(pointToVerify));
         }
     }
 

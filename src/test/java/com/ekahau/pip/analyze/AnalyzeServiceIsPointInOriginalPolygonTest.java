@@ -22,11 +22,11 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class AnalyzeServiceIsPointInOriginalPolygonTest {
 
-    private static final String folder = "src/test/resources/original/";
-    private static final String POLYGON_POINTS = folder + "originalPolygonTest.txt";
-    private static final String OUTSIDE_POINTS = folder + "outsidePoints.txt";
-    private static final String INSIDE_POINTS = folder + "insidePoints.txt";
-    private static final String BORDER_POINTS = folder + "borderPoints.txt";;
+    private static final String FOLDER = "src/test/resources/original/";
+    private static final String POLYGON_POINTS = FOLDER + "originalPolygonTest.txt";
+    private static final String OUTSIDE_POINTS = FOLDER + "outsidePoints.txt";
+    private static final String INSIDE_POINTS = FOLDER + "insidePoints.txt";
+    private static final String BORDER_POINTS = FOLDER + "borderPoints.txt";
 
     @Autowired
     AnalyzeServiceImpl analyzeService;

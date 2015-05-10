@@ -19,6 +19,7 @@ public interface AnalyzeService {
      * The main point is chosen just by first provided point from polygon set.
      *
      * The method works only for convex polygons, that is why it is not used in the application.
+     * Moreover this method considers points on the border as points which belong to the polygon.
      *
      * @param point point to analyze
      * @return {@code true} if point belongs to polygon. {@code false} otherwise

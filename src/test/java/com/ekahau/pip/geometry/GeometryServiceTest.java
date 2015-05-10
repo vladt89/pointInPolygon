@@ -33,7 +33,7 @@ public class GeometryServiceTest {
     @Before
     public void setUp() throws Exception {
         from = new Point(2, 1); // A
-        to = new Point(3, 4); // B
+        to = new Point(4, 7); // B
     }
 
     /**
