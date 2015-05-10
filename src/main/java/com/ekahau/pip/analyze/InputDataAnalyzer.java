@@ -23,7 +23,6 @@ public class InputDataAnalyzer {
         try {
             reader = new BufferedReader(new FileReader(filePath));
         } catch (FileNotFoundException e) {
-            //TODO move to caller class
             e.printStackTrace();
             System.out.println("File cannot be found in " + System.getProperty("user.dir"));
             return null;
